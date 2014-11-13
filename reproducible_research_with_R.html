@@ -1,0 +1,1977 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Combining thoughts and code</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Combining thoughts and code">
+  <meta name="author" content="Shlomi Lifshits">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Combining thoughts and code</h1>
+    <h2>Reproducible research with R</h2>
+    <p>Shlomi Lifshits<br/>shlomi.lifshits@yahoo.com</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <article data-timings="">
+    <!--
+      .....~IIIIIIIIII777$$7... ... ..  
+      .~II???III?????????III77$$...     
+    .I???$$I=~+?7$ZZOOOOZZZ$$7I7$$:. .  
+  .??~$$?:~=7ODD=.. .... ....~OZ$7$Z..  
+ .??Z$?,~~88?..+????????????+=...=77ZZ..
+,?,ZI=,~ZD:....IZDDDDDDDDDDD  DO+7$...7$~.
+??Z$:.~ON......IZ??+,=====+=??+?IO...78.
+?=$I.,$D..... .IZ???$M???+7O+7???77. .77
+??$?.:ZD..  ...IZ???$N......?$??+78 ..?$
+IIZ7,:$8..  ...IZ???$N.....~:D?+~Z=...7.
+~77$+,=$$......IZ???7++++=:~O?=:OM...=I.
+.:777I:+$O  ...IZ??+???????:ZODM....?M. 
+..,777I?=?$O...IZ???I8OO7?+I7$.. .?I~.  
+ ...+Z$7I?+?777?Z???ZN...$?I$8?ZIZ$...  
+.   ...$Z$77I??IZ???$N777I7+???7O... .  
+..   .....=OOZZIZ??+$M$ZOOO$Z++?IO....  
+          .  ..IZ???$N.....,I$++?7O...  
+         . ....I7===$N.. ...77+===IO..  
+            ...+IIIII7. ..  .=+?++???.  
+                         GlassGiant.com
+-->
+
+<style>
+strong {
+  font-weight: bold;
+}
+</style>
+
+<h2>Outline</h2>
+
+<ol>
+<li>The reproducibility crisis.</li>
+<li>The elements of reproducible research.</li>
+<li>Markdown and RMarkdown</li>
+<li>Generating reproducible documents with RStudio</li>
+<li>Dependency management.</li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>The Reproducibility crisis</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Over the past few years, there has been a growing awareness that many experimentally established &quot;facts&quot; don&#39;t seem to hold up to repeated investigation.</p>
+
+<p>This was highlighted in a 2010 article in the <a href="http://www.newyorker.com/magazine/2010/12/13/the-truth-wears-off">New Yorker</a> in which it is claimed that we are facing with a <a href="http://theconversation.com/science-is-in-a-reproducibility-crisis-how-do-we-resolve-it-16998">reproducibility crisis</a>.</p>
+
+<h1>&quot;Before the effectiveness of a drug can be confirmed, it must be tested and tested again. Different scientists in different labs need to repeat the protocols and publish their results. The test of replicability, as it&#39;s known, is the foundation of modern research. Replicability is how the community enforces itself. It&#39;s a safeguard for the creep of subjectivity.&quot;</h1>
+
+<div align="right">
+  Jonah Lehrer [New yorker]
+</div>
+
+<p><img src="./img/new_yorker.jpg" alt="Drawing" style="width: 200px;"/></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>The repliction v.s reproduction</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>We will focus on <strong>Reproducible Computational Research</strong>.</p>
+
+<h1>&quot;Reproducible Research: Make analytic data and code available so that others may reproduce findings.&quot;</h1>
+
+<div align="right">
+  Roger Peng
+</div>
+
+<p><img src="./img/coursera.png" alt="Drawing" style="width: 400px;"/></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>Ten Simple Rules for Reproducible Computational Research</h2>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li>For Every Result, Keep Track of How It Was Produced.</li>
+<li>Avoid Manual Data Manipulation Steps.</li>
+<li>Archive the Exact Versions of All External Programs Used.</li>
+<li>Version Control All Custom Scripts.</li>
+<li>Record All Intermediate Results, When Possible in Standardized Formats.</li>
+<li>For Analyses That Include Randomness, Note Underlying Random Seeds.</li>
+<li>Always Store Raw Data behind Plots.</li>
+<li>Generate Hierarchical Analysis Output, Allowing Layers of Increasing Detail to Be Inspected.</li>
+<li>Connect Textual Statements to Underlying Results.</li>
+<li>Provide Public Access to Scripts, Runs, and Results.</li>
+</ol>
+
+<p>From <a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003285">PLOS</a></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-5" style="background:;">
+  <hgroup>
+    <h2>Where to start</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Start with this article by <a href="http://ropensci.org/blog/2014/06/09/reproducibility/">FitzJohn et al.</a>.</p>
+
+<p><img src="./img/open_sci.png" alt="Drawing" style="width: 200px;"/></p>
+
+<ul>
+<li>Course on <a href="https://www.coursera.org/course/repdata">Coursera</a>.</li>
+<li>Video from <a href="http://youtu.be/aH8dpcirW1U">Roger Peng</a>.</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-6" style="background:;">
+  <hgroup>
+    <h2>Book</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>A book about reproducible research</p>
+
+<p><img src="./img/Gandrud.jpg" alt="Drawing" style="width: 300px;"/></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-7" style="background:;">
+  <hgroup>
+    <h2>Reproducible research in academic research</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>You can download this paper along with the <a href="http://datadryad.org/resource/doi:10.5061/dryad.g7jq6">data</a> (the compilation of the Latex document includes the execution of all the statistical analysis).</p>
+
+<p><img src="./img/dryad.png" alt="Drawing" style="width: 400px;"/></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-8" style="background:;">
+  <hgroup>
+    <h2>Reproducible research in academic research</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Apart from <a href="http://datadryad.org">Dryad</a>, you can store you reserach data in <a href="http://figshare.com/about">figshare</a>.</li>
+<li><a href="http://figshare.com/about">figshare</a> is a repository where users can make all of their research outputs available in a citable, shareable and discoverable manner.</li>
+</ul>
+
+<p><img src="./img/figshare.png" alt="Drawing" style="width: 400px;"/></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-9" style="background:;">
+  <hgroup>
+    <h2>Number of internet users (World Bank)</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Internet users (per 100 people). Internet users are &quot;people with access to the worldwide network&quot;.</li>
+<li>The data is extracted from the World Bank using the library <code>WDI</code> and averaged over time (2005-2011). </li>
+</ul>
+
+<pre><code class="r">library(dplyr)
+library(magrittr)
+library(WDI)
+library(googleVis)
+op &lt;- options(gvis.plot.tag=&#39;chart&#39;)
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-10" style="background:;">
+  <hgroup>
+    <h2>Number of internet users (World Bank)</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">avg.internet.users&lt;- WDI(indicator=&quot;IT.NET.USER.P2&quot;) %&gt;% 
+                    group_by(iso2c) %&gt;% 
+                    summarise(mean.num.users=round(mean(IT.NET.USER.P2),digit=1))
+
+WDI(indicator=&quot;IT.NET.USER.P2&quot;) %&gt;% filter(iso2c==&quot;IL&quot;)
+</code></pre>
+
+<pre><code>##   iso2c country IT.NET.USER.P2 year
+## 1    IL  Israel          68.87 2011
+## 2    IL  Israel          67.50 2010
+## 3    IL  Israel          63.12 2009
+## 4    IL  Israel          59.39 2008
+## 5    IL  Israel          48.13 2007
+## 6    IL  Israel          27.88 2006
+## 7    IL  Israel          25.19 2005
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-11" style="background:;">
+  <hgroup>
+    <h2>Number of internet users (World Bank)</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">avg.internet.users %&gt;% filter(iso2c==&quot;IL&quot;)
+</code></pre>
+
+<pre><code>## Source: local data frame [1 x 2]
+## 
+##   iso2c mean.num.users
+## 1    IL           51.4
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-12" style="background:;">
+  <hgroup>
+    <h2>Number of internet users (World Bank)</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">FCMap &lt;- gvisGeoMap(data = avg.internet.users,
+                    locationvar = &quot;iso2c&quot;,
+                    numvar = &quot;mean.num.users&quot;,
+                    options = list(
+                      colors = &quot;[0xECE7F2, 0xA6BDDB, 0x2B8CBE]&quot;,
+                      width = &quot;780px&quot;,
+                      height = &quot;500px&quot;))
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-13" style="background:;">
+  <hgroup>
+    <h2>Number of internet users (World Bank)</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">plot(FCMap)
+</code></pre>
+
+<!-- GeoMap generated in R 3.1.2 by googleVis 0.5.2 package -->
+
+<!-- Thu Nov 13 09:46:53 2014 -->
+
+<!-- jsHeader -->
+
+<script type="text/javascript">
+ 
+// jsData 
+function gvisDataGeoMapID30e39a573c4 () {
+var data = new google.visualization.DataTable();
+var datajson =
+[
+ [
+ "1A",
+18.9 
+],
+[
+ "1W",
+23.5 
+],
+[
+ "4E",
+19.6 
+],
+[
+ "7E",
+24.3 
+],
+[
+ "8S",
+5.1 
+],
+[
+ "AD",
+66.9 
+],
+[
+ "AE",
+60.9 
+],
+[
+ "AF",
+2.8 
+],
+[
+ "AG",
+38.7 
+],
+[
+ "AL",
+27.1 
+],
+[
+ "AM",
+13.6 
+],
+[
+ "AO",
+5.9 
+],
+[
+ "AR",
+31.8 
+],
+[
+ "AS",
+null 
+],
+[
+ "AT",
+70.2 
+],
+[
+ "AU",
+71.4 
+],
+[
+ "AW",
+46.5 
+],
+[
+ "AZ",
+25 
+],
+[
+ "B8",
+49 
+],
+[
+ "BA",
+37 
+],
+[
+ "BB",
+61.7 
+],
+[
+ "BD",
+2.5 
+],
+[
+ "BE",
+67.5 
+],
+[
+ "BF",
+1.3 
+],
+[
+ "BG",
+37.1 
+],
+[
+ "BH",
+45.6 
+],
+[
+ "BI",
+0.8 
+],
+[
+ "BJ",
+2.3 
+],
+[
+ "BM",
+78.3 
+],
+[
+ "BN",
+46.8 
+],
+[
+ "BO",
+14.8 
+],
+[
+ "BR",
+34.2 
+],
+[
+ "BS",
+35.9 
+],
+[
+ "BT",
+8.9 
+],
+[
+ "BW",
+5.6 
+],
+[
+ "BY",
+null 
+],
+[
+ "BZ",
+12.3 
+],
+[
+ "C4",
+null 
+],
+[
+ "C5",
+null 
+],
+[
+ "C6",
+null 
+],
+[
+ "C7",
+null 
+],
+[
+ "C8",
+null 
+],
+[
+ "C9",
+null 
+],
+[
+ "CA",
+76.8 
+],
+[
+ "CD",
+0.5 
+],
+[
+ "CF",
+1.1 
+],
+[
+ "CG",
+3.7 
+],
+[
+ "CH",
+78.9 
+],
+[
+ "CI",
+1.8 
+],
+[
+ "CL",
+39.7 
+],
+[
+ "CM",
+3.3 
+],
+[
+ "CN",
+22.7 
+],
+[
+ "CO",
+25.8 
+],
+[
+ "CR",
+31.1 
+],
+[
+ "CU",
+13.1 
+],
+[
+ "CV",
+16.9 
+],
+[
+ "CW",
+null 
+],
+[
+ "CY",
+44.5 
+],
+[
+ "CZ",
+57.4 
+],
+[
+ "DE",
+76.6 
+],
+[
+ "DJ",
+3.4 
+],
+[
+ "DK",
+86.4 
+],
+[
+ "DM",
+42.9 
+],
+[
+ "DO",
+23.1 
+],
+[
+ "DZ",
+10.1 
+],
+[
+ "EC",
+18.3 
+],
+[
+ "EE",
+69.3 
+],
+[
+ "EG",
+22.5 
+],
+[
+ "ER",
+null 
+],
+[
+ "ES",
+58.4 
+],
+[
+ "ET",
+0.5 
+],
+[
+ "EU",
+62.8 
+],
+[
+ "F1",
+4.1 
+],
+[
+ "FI",
+82.4 
+],
+[
+ "FJ",
+15.3 
+],
+[
+ "FM",
+15.8 
+],
+[
+ "FO",
+74.3 
+],
+[
+ "FR",
+64.7 
+],
+[
+ "GA",
+6.3 
+],
+[
+ "GB",
+78 
+],
+[
+ "GD",
+24.1 
+],
+[
+ "GE",
+15.8 
+],
+[
+ "GH",
+5.7 
+],
+[
+ "GL",
+61.5 
+],
+[
+ "GM",
+7.1 
+],
+[
+ "GN",
+0.9 
+],
+[
+ "GQ",
+3.6 
+],
+[
+ "GR",
+38.4 
+],
+[
+ "GT",
+8.6 
+],
+[
+ "GU",
+48.5 
+],
+[
+ "GW",
+2.3 
+],
+[
+ "GY",
+null 
+],
+[
+ "HK",
+66.1 
+],
+[
+ "HN",
+10 
+],
+[
+ "HR",
+46 
+],
+[
+ "HT",
+7.6 
+],
+[
+ "HU",
+56.5 
+],
+[
+ "ID",
+7.3 
+],
+[
+ "IE",
+62.1 
+],
+[
+ "IL",
+51.4 
+],
+[
+ "IM",
+null 
+],
+[
+ "IN",
+5.2 
+],
+[
+ "IQ",
+1.8 
+],
+[
+ "IR",
+11.9 
+],
+[
+ "IS",
+91.3 
+],
+[
+ "IT",
+45 
+],
+[
+ "JG",
+null 
+],
+[
+ "JM",
+23.3 
+],
+[
+ "JO",
+22.6 
+],
+[
+ "JP",
+74.4 
+],
+[
+ "KE",
+11.3 
+],
+[
+ "KG",
+15.4 
+],
+[
+ "KH",
+1 
+],
+[
+ "KI",
+7.1 
+],
+[
+ "KM",
+3.4 
+],
+[
+ "KN",
+59.7 
+],
+[
+ "KP",
+0 
+],
+[
+ "KR",
+80.1 
+],
+[
+ "KV",
+null 
+],
+[
+ "KW",
+44.2 
+],
+[
+ "KY",
+56.5 
+],
+[
+ "KZ",
+17.4 
+],
+[
+ "L4",
+null 
+],
+[
+ "L5",
+null 
+],
+[
+ "L6",
+null 
+],
+[
+ "L7",
+null 
+],
+[
+ "LA",
+4.2 
+],
+[
+ "LB",
+27.5 
+],
+[
+ "LC",
+32.9 
+],
+[
+ "LI",
+71.8 
+],
+[
+ "LK",
+7.1 
+],
+[
+ "LR",
+null 
+],
+[
+ "LS",
+3.5 
+],
+[
+ "LT",
+53 
+],
+[
+ "LU",
+81.7 
+],
+[
+ "LV",
+61 
+],
+[
+ "LY",
+8.7 
+],
+[
+ "MA",
+32.7 
+],
+[
+ "MC",
+67.7 
+],
+[
+ "MD",
+25.1 
+],
+[
+ "ME",
+32.6 
+],
+[
+ "MF",
+null 
+],
+[
+ "MG",
+1.2 
+],
+[
+ "MH",
+5.3 
+],
+[
+ "MK",
+42.5 
+],
+[
+ "ML",
+1.3 
+],
+[
+ "MM",
+0.3 
+],
+[
+ "MN",
+null 
+],
+[
+ "MO",
+49.6 
+],
+[
+ "MP",
+null 
+],
+[
+ "MR",
+2.2 
+],
+[
+ "MT",
+52.6 
+],
+[
+ "MU",
+22.8 
+],
+[
+ "MV",
+20.4 
+],
+[
+ "MW",
+1.3 
+],
+[
+ "MX",
+24.8 
+],
+[
+ "MY",
+55 
+],
+[
+ "MZ",
+2.2 
+],
+[
+ "NA",
+7 
+],
+[
+ "NC",
+37.3 
+],
+[
+ "NE",
+0.6 
+],
+[
+ "NG",
+14.9 
+],
+[
+ "NI",
+6.1 
+],
+[
+ "NL",
+87.1 
+],
+[
+ "NO",
+88.7 
+],
+[
+ "NP",
+3.4 
+],
+[
+ "NZ",
+73.6 
+],
+[
+ "OE",
+62.6 
+],
+[
+ "OM",
+23.2 
+],
+[
+ "PA",
+29.5 
+],
+[
+ "PE",
+28 
+],
+[
+ "PF",
+36 
+],
+[
+ "PG",
+1.6 
+],
+[
+ "PH",
+12.3 
+],
+[
+ "PK",
+7.3 
+],
+[
+ "PL",
+52.6 
+],
+[
+ "PR",
+35.6 
+],
+[
+ "PS",
+27.2 
+],
+[
+ "PT",
+45.1 
+],
+[
+ "PW",
+null 
+],
+[
+ "PY",
+15 
+],
+[
+ "QA",
+46.6 
+],
+[
+ "RO",
+31.9 
+],
+[
+ "RS",
+34.8 
+],
+[
+ "RU",
+29.4 
+],
+[
+ "RW",
+null 
+],
+[
+ "S1",
+13.2 
+],
+[
+ "S2",
+9.9 
+],
+[
+ "S3",
+28.8 
+],
+[
+ "S4",
+8 
+],
+[
+ "SA",
+32.1 
+],
+[
+ "SB",
+3.2 
+],
+[
+ "SC",
+null 
+],
+[
+ "SD",
+null 
+],
+[
+ "SE",
+88.3 
+],
+[
+ "SG",
+67.1 
+],
+[
+ "SI",
+59.6 
+],
+[
+ "SK",
+65.6 
+],
+[
+ "SL",
+0.4 
+],
+[
+ "SM",
+null 
+],
+[
+ "SN",
+11 
+],
+[
+ "SO",
+null 
+],
+[
+ "SR",
+20.9 
+],
+[
+ "SS",
+null 
+],
+[
+ "ST",
+16.2 
+],
+[
+ "SV",
+10.4 
+],
+[
+ "SX",
+null 
+],
+[
+ "SY",
+14.2 
+],
+[
+ "SZ",
+8.1 
+],
+[
+ "TC",
+null 
+],
+[
+ "TD",
+1.2 
+],
+[
+ "TG",
+2.5 
+],
+[
+ "TH",
+19.5 
+],
+[
+ "TJ",
+7.8 
+],
+[
+ "TL",
+0.3 
+],
+[
+ "TM",
+2.2 
+],
+[
+ "TN",
+25.3 
+],
+[
+ "TO",
+11 
+],
+[
+ "TR",
+30.9 
+],
+[
+ "TT",
+39.2 
+],
+[
+ "TV",
+null 
+],
+[
+ "TZ",
+2.1 
+],
+[
+ "UA",
+13.7 
+],
+[
+ "UG",
+7.3 
+],
+[
+ "US",
+71.2 
+],
+[
+ "UY",
+37.5 
+],
+[
+ "UZ",
+13.4 
+],
+[
+ "VC",
+24.4 
+],
+[
+ "VE",
+26.4 
+],
+[
+ "VI",
+29.1 
+],
+[
+ "VN",
+23.8 
+],
+[
+ "VU",
+7.1 
+],
+[
+ "WS",
+5.9 
+],
+[
+ "XC",
+63.3 
+],
+[
+ "XD",
+63 
+],
+[
+ "XE",
+3.1 
+],
+[
+ "XJ",
+27 
+],
+[
+ "XL",
+2.7 
+],
+[
+ "XM",
+2.6 
+],
+[
+ "XN",
+8.7 
+],
+[
+ "XO",
+14.3 
+],
+[
+ "XP",
+16.2 
+],
+[
+ "XQ",
+16.1 
+],
+[
+ "XR",
+37.6 
+],
+[
+ "XS",
+69 
+],
+[
+ "XT",
+23.7 
+],
+[
+ "XU",
+71.7 
+],
+[
+ "XY",
+null 
+],
+[
+ "YE",
+7.3 
+],
+[
+ "Z4",
+25.5 
+],
+[
+ "Z7",
+47.2 
+],
+[
+ "ZA",
+14.2 
+],
+[
+ "ZF",
+6.4 
+],
+[
+ "ZG",
+6.4 
+],
+[
+ "ZJ",
+27.5 
+],
+[
+ "ZM",
+6.5 
+],
+[
+ "ZQ",
+19.3 
+],
+[
+ "ZW",
+11.2 
+] 
+];
+data.addColumn('string','iso2c');
+data.addColumn('number','mean.num.users');
+data.addRows(datajson);
+return(data);
+}
+ 
+// jsDrawChart
+function drawChartGeoMapID30e39a573c4() {
+var data = gvisDataGeoMapID30e39a573c4();
+var options = {};
+options["dataMode"] = "regions";
+options["width"] = "780px";
+options["height"] = "500px";
+options["colors"] = [0xECE7F2, 0xA6BDDB, 0x2B8CBE];
+
+    var chart = new google.visualization.GeoMap(
+    document.getElementById('GeoMapID30e39a573c4')
+    );
+    chart.draw(data,options);
+    
+
+}
+  
+ 
+// jsDisplayChart
+(function() {
+var pkgs = window.__gvisPackages = window.__gvisPackages || [];
+var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
+var chartid = "geomap";
+  
+// Manually see if chartid is in pkgs (not all browsers support Array.indexOf)
+var i, newPackage = true;
+for (i = 0; newPackage && i < pkgs.length; i++) {
+if (pkgs[i] === chartid)
+newPackage = false;
+}
+if (newPackage)
+  pkgs.push(chartid);
+  
+// Add the drawChart function to the global list of callbacks
+callbacks.push(drawChartGeoMapID30e39a573c4);
+})();
+function displayChartGeoMapID30e39a573c4() {
+  var pkgs = window.__gvisPackages = window.__gvisPackages || [];
+  var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
+  window.clearTimeout(window.__gvisLoad);
+  // The timeout is set to 100 because otherwise the container div we are
+  // targeting might not be part of the document yet
+  window.__gvisLoad = setTimeout(function() {
+  var pkgCount = pkgs.length;
+  google.load("visualization", "1", { packages:pkgs, callback: function() {
+  if (pkgCount != pkgs.length) {
+  // Race condition where another setTimeout call snuck in after us; if
+  // that call added a package, we must not shift its callback
+  return;
+}
+while (callbacks.length > 0)
+callbacks.shift()();
+} });
+}, 100);
+}
+ 
+// jsFooter
+</script>
+ 
+
+<!-- jsChart -->  
+
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartGeoMapID30e39a573c4"></script>
+ 
+
+<!-- divChart -->
+
+<div id="GeoMapID30e39a573c4"
+  style="width: 780pxpx; height: 500pxpx;">
+</div>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-14" style="background:;">
+  <hgroup>
+    <h2>Reproducible computing</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>This document was generated together with the statistical analysis and the graphics generation.</p>
+
+<h1>Q: Is its reproducible?</h1>
+
+<!-- 
+A: 
+  not next year when the database is changed and the average is done over more years.
+  not shure anout the behavior of R and all the other libraries.
+-->
+
+<ul>
+<li>Store the source files and the textual analysis together in a version control system.</li>
+<li>Store the raw data (cvs) or as objects (serialization) in a version control system .</li>
+<li>Save the software environment details.</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-15" style="background:;">
+  <hgroup>
+    <h2>Markdown</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Markdown enables writing in an <strong>easy-to-read</strong>, <strong>easy-to-write</strong> plain text format, and convert it to HTML.</p>
+
+<h1>&quot;The overriding design goal for Markdown&#39;s formatting syntax is to make it as <strong>readable</strong> as possible. The idea is that a Markdown-formatted document should be <strong>publishable as-is, as plain text</strong>, without looking like it&#39;s been marked up with tags formatting instructions.&quot;</h1>
+
+<div align="right">
+  John Gruber
+</div>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-16" style="background:;">
+  <hgroup>
+    <h2>Markdown</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Learning <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Here-Cheatsheet">markdown</a> is easy using <a href="http://dillinger.io/">Dillinger</a>. </p>
+
+<p><img src="./img/dillinger.png" alt="Drawing" style="width: 700px;"/></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-17" style="background:;">
+  <hgroup>
+    <h2>knitr (Yihui Xie)</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><a href="http://yihui.name/knitr/">knitr</a> implement the analysis in a <strong>literate programming</strong> style.</li>
+<li>Replaces <code>SWeave</code>.</li>
+<li>Document includes <strong>Code chunks</strong>.</li>
+</ul>
+
+<p><img src="./img/knit.png" alt="Drawing" style="width: 200px;"/></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-18" style="background:;">
+  <hgroup>
+    <h2>R Markdown (by RStudio)</h2>
+  </hgroup>
+  <article data-timings="">
+    <h1><a href="http://rmarkdown.rstudio.com/">R Markdown</a> is a variant of Markdown that has embedded R <strong>code chunks</strong>, to be used with <strong>knitr</strong> to make it easy to create reproducible web-based reports.</h1>
+
+<p>With R Markdown you can:</p>
+
+<ul>
+<li>Compile HTML, PDF, or MS Word notebooks from R scripts.</li>
+<li>Create Beamer, ioslides and <a href="http://www.w3.org/Talks/Tools/Slidy2/#(1">Slidy</a> presentations.</li>
+<li>Create interactive R Markdown documents using Shiny.
+
+<ul>
+<li>My Shiny <a href="https://drive.google.com/viewerng/viewer?a=v&amp;pid=sites&amp;srcid=ZGVmYXVsdGRvbWFpbnxzaGxvbWlsaWZzaGl0c3xneDoyNjIyNzllYTAzYmY2OWYx">workshop</a> and <a href="https://github.com/shlomyli/shiny">code</a>.</li>
+</ul></li>
+<li>RStudio has also a <a href="https://support.rstudio.com/hc/en-us/articles/200486468-Authoring-R-Presentations">presentation viewer</a>.</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-19" style="background:;">
+  <hgroup>
+    <h2>R Markdown</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>View this <a href="https://www.youtube.com/watch?v=2yvW0O_7xOg#t=41">video</a>.</li>
+<li>Another <a href="https://support.rstudio.com/hc/en-us/articles/200552086-Using-R-Markdown">link</a></li>
+</ul>
+
+<p><img src="./img/rmarkdown1.png" alt="Drawing" style="width: 400px;"/></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-20" style="background:;">
+  <hgroup>
+    <h2>Why use HTML and not Pdf</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>It is tetxual.</li>
+<li><strong>Infographics</strong> 
+
+<ul>
+<li>browsers supports SVG and enable interactions
+-<a href="http://cran.r-project.org/web/packages/googleVis/vignettes/Using_googleVis_with_knitr.html">googleVis</a> </li>
+<li>The <a href="http://d3js.org/">d3</a> javascript library. See nice <a href="http://glimmer.rstudio.com/timelyportfolio/shiny-d3-showreel/">example</a>.</li>
+</ul></li>
+<li>Browser supports math (MathJax).</li>
+<li>Hosting of web pages on Github.</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-21" style="background:;">
+  <hgroup>
+    <h2>Tables</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>| val           | str   |
+| ------------- | ----- |
+| 1             | a     |
+| 2             | b     |
+</code></pre>
+
+<table><thead>
+<tr>
+<th>val</th>
+<th>str</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1</td>
+<td>a</td>
+</tr>
+<tr>
+<td>2</td>
+<td>b</td>
+</tr>
+</tbody></table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-22" style="background:;">
+  <hgroup>
+    <h2>Tables</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(xtable)
+df&lt;-data.frame(x=c(1,2),y=c(&quot;a&quot;,&quot;b&quot;))
+tbl&lt;-xtable(df)
+print(tbl,type=&quot;html&quot;)
+</code></pre>
+
+<!-- html table generated in R 3.1.2 by xtable 1.7-3 package -->
+
+<!-- Thu Nov 13 09:46:53 2014 -->
+
+<TABLE border=1>
+<TR> <TH>  </TH> <TH> x </TH> <TH> y </TH>  </TR>
+  <TR> <TD align="right"> 1 </TD> <TD align="right"> 1.00 </TD> <TD> a </TD> </TR>
+  <TR> <TD align="right"> 2 </TD> <TD align="right"> 2.00 </TD> <TD> b </TD> </TR>
+   </TABLE>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-23" style="background:;">
+  <hgroup>
+    <h2>RStudio Git integration</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><a href="http://nicercode.github.io/git/rstudio.html">here</a></p>
+
+<p><img src="./img/git.png" alt="Drawing" style="width: 400px;"/></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-24" style="background:;">
+  <hgroup>
+    <h2>RStudio Packrat integration</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><a href="http://rstudio.github.io/packrat">Packrat</a> is a dependency management system for R.
+Creates a private package library for a given R project (i.e. working directory).</p>
+
+<p>See <a href="http://www.r-bloggers.com/creating-reproducible-software-environments-with-packrat/">here</a> 
+and <a href="http://rstudio-pubs-static.s3.amazonaws.com/21739_5ef7fdf9080346db8a7bafefabca5788.html#2">here</a>.</p>
+
+<p><img src="./img/packrat.png" alt="Drawing" style="width: 400px;"/></p>
+
+<p>When you start an R session in a packrat project directory, R will only look for packages in your private library; and anytime you install or remove a package, those changes will be made to your private library.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-25" style="background:;">
+  <hgroup>
+    <h2>The Packrat dependency management library</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><strong>Isolated</strong>: Installing a new or updated package for one project won&#39;t break your other projects, and vice versa. That&#39;s because packrat gives each project its own private package library.</li>
+<li><strong>Portable</strong>: Easily transport your projects from one computer to another, even across different platforms. Packrat makes it easy to install the packages your project depends on.</li>
+<li><strong>Reproducible</strong>: Packrat records the exact package versions you depend on, and ensures those exact versions are the ones that get installed wherever you go.</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-26" style="background:;">
+  <hgroup>
+    <h2>Checkpoint (Revolution R)</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Revolution stores daily snapshots of all CRAN packages. You can access these daily snapshots using the checkpoint package, which installs and consistently use these packages just as they existed at the snapshot date. </p>
+
+<p><img src="./img/checkpoint.jpg" alt="Drawing" style="width: 700px;"/></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-27" style="background:;">
+  <hgroup>
+    <h2>Docker</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>People have been successfull in using <a href="http://melissagymrek.com/science/2014/08/29/docker-reproducible-research.html">Docker</a> and R.</li>
+<li>Docker has a <strong>repository of images</strong> called Docker hub that is pretty analagous to github except it&#39;s for Docker images instead of for code. You can pull, push, track, and modify images and share them with other people.</li>
+</ul>
+
+<p><a href="http://arxiv.org/abs/1410.0846">paper</a></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-28" style="background:;">
+  <hgroup>
+    <h2>RNG seed</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Random number generators generate pseudo-random numbers based on an initial seed.</li>
+<li>Setting the seed allows for the stream of random numbers to be exactly reproducible.</li>
+<li>In R you can use the <code>set.seed()</code> function to set the seed and to specify the random number generator to use.</li>
+</ul>
+
+<pre><code class="r">set.seed(42)
+rnorm(5)
+</code></pre>
+
+<pre><code>## [1]  1.3710 -0.5647  0.3631  0.6329  0.4043
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-29" style="background:;">
+  <hgroup>
+    <h2>RNG seed</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">rnorm(5)
+</code></pre>
+
+<pre><code>## [1] -0.10612  1.51152 -0.09466  2.01842 -0.06271
+</code></pre>
+
+<pre><code class="r">set.seed(42)
+rnorm(5)
+</code></pre>
+
+<pre><code>## [1]  1.3710 -0.5647  0.3631  0.6329  0.4043
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-30" style="background:;">
+  <hgroup>
+    <h2>Software Environment</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">sessionInfo()
+</code></pre>
+
+<pre><code>## R version 3.1.2 (2014-10-31)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## 
+## locale:
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] xtable_1.7-3    googleVis_0.5.2 WDI_2.4         RJSONIO_1.2-0.2
+## [5] magrittr_1.0.1  dplyr_0.3.0.2   slidify_0.4.5  
+## 
+## loaded via a namespace (and not attached):
+##  [1] assertthat_0.1  codetools_0.2-9 DBI_0.3.1       digest_0.6.4   
+##  [5] evaluate_0.5.5  formatR_0.10    knitr_1.6       lazyeval_0.1.9 
+##  [9] markdown_0.7    parallel_3.1.2  Rcpp_0.11.3     stringr_0.6.2  
+## [13] tools_3.1.2     whisker_0.3-2   yaml_2.1.13
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title=''>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='The Reproducibility crisis'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='The repliction v.s reproduction'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Ten Simple Rules for Reproducible Computational Research'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Where to start'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='Book'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='Reproducible research in academic research'>
+         7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='Reproducible research in academic research'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='Number of internet users (World Bank)'>
+         9
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='Number of internet users (World Bank)'>
+         10
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title='Number of internet users (World Bank)'>
+         11
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title='Number of internet users (World Bank)'>
+         12
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title='Number of internet users (World Bank)'>
+         13
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='Reproducible computing'>
+         14
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='Markdown'>
+         15
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='Markdown'>
+         16
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='knitr (Yihui Xie)'>
+         17
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='R Markdown (by RStudio)'>
+         18
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=19 title='R Markdown'>
+         19
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=20 title='Why use HTML and not Pdf'>
+         20
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=21 title='Tables'>
+         21
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=22 title='Tables'>
+         22
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=23 title='RStudio Git integration'>
+         23
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=24 title='RStudio Packrat integration'>
+         24
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=25 title='The Packrat dependency management library'>
+         25
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=26 title='Checkpoint (Revolution R)'>
+         26
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=27 title='Docker'>
+         27
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=28 title='RNG seed'>
+         28
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=29 title='RNG seed'>
+         29
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=30 title='Software Environment'>
+         30
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
